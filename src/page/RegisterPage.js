@@ -13,6 +13,7 @@ const RegisterPage = () => {
     confirmPassword: "",
     policy: false,
   });
+  const { name, email, password, confirmPassword, policy } = formData;
   const navigate = useNavigate();
   const [passwordError, setPasswordError] = useState("");
   const [policyError, setPolicyError] = useState(false);
@@ -20,15 +21,27 @@ const RegisterPage = () => {
 
   const register = (event) => {
     event.preventDefault();
-    // 비번 중복확인 일치하는지 확인
-    // 이용약관에 체크했는지 확인
-    // FormData에 있는 값을 가지고 백엔드로 넘겨주기
-    //성공후 로그인 페이지로 넘어가기
+    if (password !== confirmPassword) {
+      setPasswordError("비밀번호 중복확인이 일치하지 않습니다");
+      return;
+    }
+    if (!policy) {
+      setPolicyError(true);
+      return;
+    }
+    setPasswordError("");
+    setPolicyError(false);
+    dispatch(userActions.registerUser({ email, name, password }, navigate));
   };
 
   const handleChange = (event) => {
     event.preventDefault();
-    // 값을 읽어서 FormData에 넣어주기
+    const { id, value, checked } = event.target;
+    if (id === "policy") {
+      setFormData({ ...formData, [id]: checked });
+    } else {
+      setFormData({ ...formData, [id]: value });
+    }
   };
 
   return (
