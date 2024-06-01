@@ -6,10 +6,11 @@ function userReducer(state = initialState, action) {
   switch (type) {
     case types.REGISTER_USER_REQUEST:
     case types.LOGIN_REQUEST:
-      return { ...state, loading: true };
+      return { ...state, loading: true, error: null };
     case types.LOGIN_SUCCESS:
       return { ...state, loading: false, user: payload.user };
     case types.LOGIN_FAIL:
+      return { ...state, loading: false, error: payload };
     case types.REGISTER_USER_FAIL:
       return { ...state, loading: false, error: payload };
 
