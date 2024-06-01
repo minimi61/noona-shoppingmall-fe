@@ -11,7 +11,6 @@ function userReducer(state = initialState, action) {
       return { ...state, loading: false, user: payload.user };
     case types.LOGIN_FAIL:
     case types.REGISTER_USER_FAIL:
-      console.log("여기", payload);
       return { ...state, loading: false, error: payload };
 
     default:
