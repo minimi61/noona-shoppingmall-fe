@@ -49,7 +49,7 @@ const RegisterPage = () => {
       {error && (
         <div>
           <Alert variant="danger" className="error-message">
-            {error.message}
+            {error}
           </Alert>
         </div>
       )}
