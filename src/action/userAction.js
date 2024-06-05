@@ -58,10 +58,15 @@ const registerUser =
       dispatch({ type: types.REGISTER_USER_FAIL, payload: error.error });
     }
   };
+const clearError = (dispatch) => {
+  dispatch({ type: types.CLEAR_ERROR });
+};
+
 export const userActions = {
   loginWithToken,
   loginWithEmail,
   logout,
   loginWithGoogle,
   registerUser,
+  clearError,
 };
