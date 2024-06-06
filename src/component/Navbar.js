@@ -45,7 +45,7 @@ const Navbar = ({ user }) => {
       if (event.target.value === "") {
         return navigate("/");
       }
-      navigate(`?name=${event.target.value}`);
+      navigate(`?page=1&name=${event.target.value}`);
       setSearchQuery({ ...searchQuery, page: 1, name: event.target.value });
     }
   };
