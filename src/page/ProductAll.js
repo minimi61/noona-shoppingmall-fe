@@ -13,22 +13,36 @@ const ProductAll = () => {
 
   const error = useSelector((state) => state.product.error);
   const { productList, totalPageNum } = useSelector((state) => state.product);
-  const [query, setQuery] = useSearchParams(window.location.href);
+  const [query, setQuery] = useSearchParams();
   const [searchQuery, setSearchQuery] = useState({
     page: query.get("page") || 1,
     name: query.get("name") || "",
   });
+  const [prevQuery, setPrevQuery] = useState({});
 
   useEffect(() => {
-    dispatch(productActions.getProductList({ ...searchQuery }));
+    const currentName = query.get("name");
+    const currentPage = query.get("page") || 1;
+
+    setSearchQuery((prevState) => {
+      if (prevState.name !== currentName || prevState.page !== currentPage) {
+        return { page: currentPage, name: currentName || "" };
+      }
+      return prevState;
+    });
   }, [query]);
+
   useEffect(() => {
-    if (searchQuery.name === "") {
-      delete searchQuery.name;
+    if (
+      searchQuery.page !== prevQuery.page ||
+      searchQuery.name !== prevQuery.name
+    ) {
+      setPrevQuery(searchQuery);
+
+      const params = new URLSearchParams(searchQuery);
+      navigate("?" + params.toString());
+      dispatch(productActions.getProductList({ ...searchQuery }));
     }
-    const params = new URLSearchParams(searchQuery);
-    const query = params.toString();
-    navigate("?" + query);
   }, [searchQuery]);
 
   const handlePageClick = ({ selected }) => {

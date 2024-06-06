@@ -28,8 +28,8 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
   const dispatch = useDispatch();
   const [stockError, setStockError] = useState(false);
   const handleClose = () => {
-    //모든걸 초기화시키고;
-    // 다이얼로그 닫아주기
+    setFormData([]);
+    setShowDialog(false);
   };
 
   const handleSubmit = (event) => {
