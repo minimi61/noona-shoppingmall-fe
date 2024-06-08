@@ -13,6 +13,7 @@ import ProductTable from "../component/ProductTable";
 const AdminProduct = () => {
   const navigate = useNavigate();
   const { productList, totalPageNum } = useSelector((state) => state.product);
+  const filterProductList = productList.filter((item) => !item.isDeleted);
   const [query, setQuery] = useSearchParams();
   const dispatch = useDispatch();
   const [showDialog, setShowDialog] = useState(false);
@@ -48,6 +49,7 @@ const AdminProduct = () => {
 
   const deleteItem = (id) => {
     //아이템 삭제하가ㅣ
+    dispatch(productActions.deleteProduct(id, searchQuery.page));
   };
 
   const openEditForm = (product) => {
@@ -87,7 +89,7 @@ const AdminProduct = () => {
 
         <ProductTable
           header={tableHeader}
-          data={productList}
+          data={filterProductList}
           deleteItem={deleteItem}
           openEditForm={openEditForm}
         />

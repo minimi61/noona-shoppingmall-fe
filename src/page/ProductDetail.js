@@ -15,40 +15,40 @@ const ProductDetail = () => {
   const [size, setSize] = useState("");
   const { id } = useParams();
   const [sizeError, setSizeError] = useState(false);
-
+  const { productList } = useSelector((state) => state.product);
   const navigate = useNavigate();
 
+  // productList가 업데이트될 때마다 filterData를 다시 계산
+  const filterData = productList || {}.find((item) => item._id === id);
+  const { name, image, price, description, stock } = filterData || {};
+
+  const stockToArray = Object.keys(stock || {}).map((size) => [
+    size,
+    stock[size],
+  ]);
   const addItemToCart = () => {
-    //사이즈를 아직 선택안했다면 에러
-    // 아직 로그인을 안한유저라면 로그인페이지로
+    // 사이즈를 아직 선택 안 했다면 에러
+    // 아직 로그인을 안 한 유저라면 로그인 페이지로 이동
     // 카트에 아이템 추가하기
   };
+
   const selectSize = (value) => {
-    // 사이즈 추가하기
+    setSize(value);
   };
 
-  //카트에러가 있으면 에러메세지 보여주기
-
-  //에러가 있으면 에러메세지 보여주기
-
   useEffect(() => {
-    //상품 디테일 정보 가져오기
-  }, [id]);
-
+    dispatch(productActions.getProductDetail(id));
+  }, [dispatch, id]);
   return (
     <Container className="product-detail-card">
       <Row>
         <Col sm={6}>
-          <img
-            src="https://lp2.hm.com/hmgoepprod?set=quality%5B79%5D%2Csource%5B%2F3a%2F04%2F3a04ededbfa6a7b535e0ffa30474853fc95d2e81.jpg%5D%2Corigin%5Bdam%5D%2Ccategory%5B%5D%2Ctype%5BLOOKBOOK%5D%2Cres%5Bm%5D%2Chmver%5B1%5D&call=url[file:/product/fullscreen]"
-            className="w-100"
-            alt="image"
-          />
+          <img src={image && image} className="w-100" alt="product" />
         </Col>
         <Col className="product-info-area" sm={6}>
-          <div className="product-info">리넨셔츠</div>
-          <div className="product-info">₩ 45,000</div>
-          <div className="product-info">샘플설명</div>
+          <div className="product-info">{name}</div>
+          <div className="product-info">₩ {price}</div>
+          <div className="product-info">{description}</div>
 
           <Dropdown
             className="drop-down size-drop-down"
@@ -66,7 +66,27 @@ const ProductDetail = () => {
             </Dropdown.Toggle>
 
             <Dropdown.Menu className="size-drop-down">
-              <Dropdown.Item>M</Dropdown.Item>
+              {stockToArray.map((size, index) => (
+                <Dropdown.Item
+                  key={index}
+                  style={{
+                    width: "100%",
+                  }}
+                  eventKey={size[1] !== 0 && size[0]}
+                  disabled={size[1] === 0}
+                >
+                  <div
+                    style={{
+                      display: "flex",
+                      justifyContent: "space-between",
+                      width: "100%",
+                    }}
+                  >
+                    <div>{stockToArray[index][0]}</div>
+                    <div>잔여: {stockToArray[index][1]}개</div>
+                  </div>
+                </Dropdown.Item>
+              ))}
             </Dropdown.Menu>
           </Dropdown>
           <div className="warning-message">

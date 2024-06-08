@@ -12,7 +12,6 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../action/userAction";
 import { productActions } from "../action/productAction";
-import useQueryState from "../hooks/useQueryState";
 
 const Navbar = ({ user }) => {
   const dispatch = useDispatch();
@@ -32,10 +31,17 @@ const Navbar = ({ user }) => {
   let [width, setWidth] = useState(0);
   let navigate = useNavigate();
   const [query, setQuery] = useSearchParams();
-  const [searchQuery, setSearchQuery] = useQueryState(
-    { page: 1, name: "" },
-    productActions.getProductList
-  );
+  const name = query.get("name") || "";
+
+  useEffect(() => {
+    if (name) {
+      dispatch(
+        productActions.getProductList({
+          name,
+        })
+      );
+    }
+  }, [dispatch, name]);
 
   const onCheckEnter = (event) => {
     if (event.key === "Enter") {
@@ -43,7 +49,7 @@ const Navbar = ({ user }) => {
         return navigate("/");
       }
       navigate(`?page=1&name=${event.target.value}`);
-      setSearchQuery({ page: 1, name: event.target.value });
+      setQuery({ page: 1, name: event.target.value });
     }
   };
   const logout = () => {

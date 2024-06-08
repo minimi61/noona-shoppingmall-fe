@@ -14,30 +14,48 @@ const ProductAll = () => {
 
   const error = useSelector((state) => state.product.error);
   const { productList, totalPageNum } = useSelector((state) => state.product);
-  const [searchQuery, setSearchQuery] = useQueryState(
-    { page: 1, name: "" },
-    productActions.getProductList
-  );
+
+  const [query, setQuery] = useSearchParams();
+  const name = query.get("name") || "";
+  const page = query.get("page") || 1;
+
+  useEffect(() => {
+    const params = { name, page };
+    if (page) {
+      dispatch(productActions.getProductList(params));
+    }
+  }, [dispatch, name, page]);
 
   const handlePageClick = ({ selected }) => {
-    setSearchQuery({ ...searchQuery, page: selected + 1 });
+    const newQuery = new URLSearchParams(query.toString()); // query 객체를 URLSearchParams 객체로 변환
+    newQuery.set("page", selected + 1); // 페이지 번호 설정
+    setQuery(newQuery); // 새로운 쿼리 설정
   };
-
   return (
     <Container>
       <Row>
-        {(productList || []).map((item, index) => (
-          <Col md={3} sm={12} key={index}>
-            <ProductCard productList={item} />
-          </Col>
-        ))}
+        {productList.length > 0 ? (
+          productList.map((item) => (
+            <Col md={3} sm={12} key={item._id}>
+              <ProductCard item={item} />
+            </Col>
+          ))
+        ) : (
+          <div className="text-align-center empty-bag">
+            {name === "" ? (
+              <h2>등록된 상품이 없습니다!</h2>
+            ) : (
+              <h6>{name}과 일치한 상품이 없습니다!</h6>
+            )}
+          </div>
+        )}
       </Row>
       <ReactPaginate
         nextLabel="next >"
         onPageChange={handlePageClick}
         pageRangeDisplayed={5}
         pageCount={totalPageNum}
-        forcePage={searchQuery.page - 1} // 1페이지면 2임 여긴 한개씩 +1 해야함
+        forcePage={parseInt(page) - 1} // 문자열을 숫자로 변환하고 0-indexed 페이지 번호로 변환
         previousLabel="< previous"
         renderOnZeroPageCount={null}
         pageClassName="page-item"
