@@ -21,18 +21,26 @@ const ProductDetail = () => {
   // productList가 업데이트될 때마다 filterData를 다시 계산
   const filterData = productList || {}.find((item) => item._id === id);
   const { name, image, price, description, stock } = filterData || {};
-
+  const { user } = useSelector((state) => state.user);
   const stockToArray = Object.keys(stock || {}).map((size) => [
     size,
     stock[size],
   ]);
   const addItemToCart = () => {
     // 사이즈를 아직 선택 안 했다면 에러
+    if (size === "") {
+      return setSizeError(true);
+    }
     // 아직 로그인을 안 한 유저라면 로그인 페이지로 이동
+    if (!user) {
+      navigate("/login");
+    }
     // 카트에 아이템 추가하기
+    dispatch(cartActions.addToCart({ id, size }));
   };
 
   const selectSize = (value) => {
+    if (sizeError) setSizeError(false);
     setSize(value);
   };
 

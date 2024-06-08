@@ -34,14 +34,12 @@ const Navbar = ({ user }) => {
   const name = query.get("name") || "";
 
   useEffect(() => {
-    if (name) {
-      dispatch(
-        productActions.getProductList({
-          name,
-        })
-      );
-    }
-  }, [dispatch, name]);
+    dispatch(
+      productActions.getProductList({
+        name,
+      })
+    );
+  }, [query]);
 
   const onCheckEnter = (event) => {
     if (event.key === "Enter") {
