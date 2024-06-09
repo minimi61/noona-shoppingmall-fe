@@ -66,11 +66,12 @@ const updateQty = (id, value) => async (dispatch) => {
     dispatch({ type: types.UPDATE_CART_ITEM_REQUEST });
     const response = await api.put(`/cart/${id}`, { qty: value });
     if (response.status !== 200) throw new Error(response.error);
-    console.log("ddddd", response);
     dispatch({
       type: types.UPDATE_CART_ITEM_SUCCESS,
       payload: response.data.data,
     });
+    dispatch(getCartList());
+
     dispatch(
       commonUiActions.showToastMessage(
         "카트에 상품이 수정되었습니다!",

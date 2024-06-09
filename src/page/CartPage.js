@@ -12,7 +12,7 @@ const CartPage = () => {
   const { cartList, totalPrice, cartItemCount } = useSelector(
     (state) => state.cart
   );
-  console.log("cartItemQty", cartList, cartItemCount);
+
   useEffect(() => {
     //카트리스트 불러오기
     dispatch(cartActions.getCartList());

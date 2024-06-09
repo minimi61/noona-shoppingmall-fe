@@ -32,14 +32,18 @@ function cartReducer(state = initialState, action) {
     case types.DELETE_CART_ITEM_SUCCESS:
       return { ...state, loading: false, cartItemCount: payload };
     case types.UPDATE_CART_ITEM_SUCCESS:
+      const updatedCartList = state.cartList.map((item) =>
+        item._id === payload._id ? { ...item, qty: payload.qty } : item
+      );
+      const updatedTotalPrice = updatedCartList.reduce(
+        (total, item) => total + item.productId.price * item.qty,
+        0
+      );
       return {
         ...state,
         loading: false,
-        cartList: payload,
-        totalPrice: payload.reduce(
-          (total, item) => (total += item.productId.price * item.qty),
-          0
-        ),
+        cartList: updatedCartList,
+        totalPrice: updatedTotalPrice,
       };
     case types.GET_CART_LIST_SUCCESS:
       return {
