@@ -14,7 +14,7 @@ const AdminOrderPage = () => {
   const navigate = useNavigate();
   const [query, setQuery] = useSearchParams();
   const dispatch = useDispatch();
-  const orderList = useSelector((state) => state.order.orderList);
+  const { orderList, email } = useSelector((state) => state.order);
   const [searchQuery, setSearchQuery] = useState({
     page: query.get("page") || 1,
     ordernum: query.get("ordernum") || "",
@@ -75,6 +75,7 @@ const AdminOrderPage = () => {
           header={tableHeader}
           data={orderList}
           openEditForm={openEditForm}
+          email={email}
         />
         <ReactPaginate
           nextLabel="next >"

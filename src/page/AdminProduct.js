@@ -13,7 +13,7 @@ import ProductTable from "../component/ProductTable";
 const AdminProduct = () => {
   const navigate = useNavigate();
   const { productList, totalPageNum } = useSelector((state) => state.product);
-  const filterProductList = productList.filter((item) => !item.isDeleted);
+  const filterProductList = productList?.filter((item) => !item.isDeleted);
   const [query, setQuery] = useSearchParams();
   const dispatch = useDispatch();
   const [showDialog, setShowDialog] = useState(false);

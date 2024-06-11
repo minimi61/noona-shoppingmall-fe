@@ -20,8 +20,34 @@ const createOrder = (payload, navigate) => async (dispatch) => {
   }
 };
 
-const getOrder = () => async (dispatch) => {};
-const getOrderList = (query) => async (dispatch) => {};
+const getOrder = () => async (dispatch) => {
+  try {
+    dispatch({ type: types.GET_ORDER_REQUEST });
+    const response = await api.get("/order");
+    if (response.status !== 200) throw new Error(response.error);
+    dispatch({
+      type: types.GET_ORDER_SUCCESS,
+      payload: response.data.orderList,
+    });
+  } catch (error) {
+    dispatch({ type: types.GET_ORDER_FAIL, payload: error.error });
+  }
+};
+const getOrderList = (query) => async (dispatch) => {
+  try {
+    dispatch({ type: types.GET_ORDER_LIST_REQUEST });
+    const response = await api.get("/order/admin");
+    if (response.status !== 200) throw new Error(response.error);
+    const { user, orderList } = response.data;
+
+    dispatch({
+      type: types.GET_ORDER_LIST_SUCCESS,
+      payload: { user, orderList },
+    });
+  } catch (error) {
+    dispatch({ type: types.GET_ORDER_LIST_FAIL, payload: error.error });
+  }
+};
 
 const updateOrder = (id, status) => async (dispatch) => {};
 
