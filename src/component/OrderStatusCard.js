@@ -4,7 +4,7 @@ import { badgeBg } from "../constants/order.constants";
 import { currencyFormat } from "../utils/number";
 
 const OrderStatusCard = ({ order }) => {
-  const { orderNum, items, totalPrice, createdAt } = order;
+  const { orderNum, items, totalPrice, createdAt, status } = order;
   const dateStr = createdAt;
   const dateOnly = dateStr?.match(/^\d{4}-\d{2}-\d{2}/)[0];
   return (
@@ -28,7 +28,7 @@ const OrderStatusCard = ({ order }) => {
         </Col>
         <Col md={2} className="vertical-middle">
           <div className="text-align-center text-12">주문상태</div>
-          <Badge bg="warning">preparing</Badge>
+          <Badge bg={badgeBg[status]}>{status}</Badge>
         </Col>
       </Row>
     </div>

@@ -14,7 +14,7 @@ const OrderTable = ({ header, data, openEditForm, email }) => {
           </tr>
         </thead>
         <tbody>
-          {data.length > 0 ? (
+          {data?.length > 0 ? (
             data.map((item, index) => (
               <tr onClick={() => openEditForm(item)}>
                 <th>{index}</th>
@@ -34,7 +34,9 @@ const OrderTable = ({ header, data, openEditForm, email }) => {
 
                 <th>{currencyFormat(item.totalPrice)}</th>
                 <th>
-                  <Badge bg={badgeBg[item.status]}>{item.status}</Badge>
+                  <Badge bg={badgeBg[item.status]}>
+                    {item.status === "active" ? "preparing" : item.status}
+                  </Badge>
                 </th>
               </tr>
             ))

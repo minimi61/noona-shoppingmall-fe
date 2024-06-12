@@ -36,20 +36,38 @@ const getOrder = () => async (dispatch) => {
 const getOrderList = (query) => async (dispatch) => {
   try {
     dispatch({ type: types.GET_ORDER_LIST_REQUEST });
-    const response = await api.get("/order/admin");
+    const response = await api.get("/order/admin", { params: { ...query } });
     if (response.status !== 200) throw new Error(response.error);
-    const { user, orderList } = response.data;
+    const data = response.data;
 
     dispatch({
       type: types.GET_ORDER_LIST_SUCCESS,
-      payload: { user, orderList },
+      payload: data,
     });
   } catch (error) {
     dispatch({ type: types.GET_ORDER_LIST_FAIL, payload: error.error });
   }
 };
 
-const updateOrder = (id, status) => async (dispatch) => {};
+const updateOrder = (id, status, page) => async (dispatch) => {
+  try {
+    dispatch({ type: types.UPDATE_ORDER_REQUEST });
+    const response = await api.put(`/order/admin/${id}`, { status: status });
+    if (response.status !== 200) throw new Error(response.error);
+
+    dispatch({
+      type: types.UPDATE_ORDER_SUCCESS,
+    });
+    dispatch(getOrderList({ page }));
+
+    dispatch(
+      commonUiActions.showToastMessage("배송상태가 변경되었습니다!", "success")
+    );
+  } catch (error) {
+    dispatch({ type: types.UPDATE_ORDER_FAIL, payload: error.error });
+    dispatch(commonUiActions.showToastMessage(error.error, "error"));
+  }
+};
 
 export const orderActions = {
   createOrder,
