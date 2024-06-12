@@ -3,6 +3,7 @@ import { Table, Badge } from "react-bootstrap";
 import { badgeBg } from "../constants/order.constants";
 import { currencyFormat } from "../utils/number";
 const OrderTable = ({ header, data, openEditForm, email }) => {
+  console.log("item?.createdAt", data);
   return (
     <div className="overflow-x">
       <Table striped bordered hover>
@@ -19,7 +20,7 @@ const OrderTable = ({ header, data, openEditForm, email }) => {
               <tr onClick={() => openEditForm(item)}>
                 <th>{index}</th>
                 <th>{item.orderNum}</th>
-                <th>{item?.createdAt.slice(0, 10) | ""}</th>
+                <th>{item.createdAt ? item.createdAt.slice(0, 10) : ""}</th>
                 <th>{email}</th>
                 {item.items.length > 0 ? (
                   <th>
