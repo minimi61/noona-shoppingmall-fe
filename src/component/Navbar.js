@@ -18,16 +18,7 @@ const Navbar = ({ user }) => {
   const { cartItemCount } = useSelector((state) => state.cart);
   const isMobile = window.navigator.userAgent.indexOf("Mobile") !== -1;
   const [showSearchBox, setShowSearchBox] = useState(false);
-  const menuList = [
-    "여성",
-    "Divided",
-    "남성",
-    "신생아/유아",
-    "아동",
-    "H&M HOME",
-    "Sale",
-    "지속가능성",
-  ];
+  const menuList = ["여성", "Divided", "남성", "신생아/유아", "아동", "Sale"];
   let [width, setWidth] = useState(0);
   let navigate = useNavigate();
   const [query, setQuery] = useSearchParams();
@@ -138,7 +129,7 @@ const Navbar = ({ user }) => {
 
       <div className="nav-logo">
         <Link to="/">
-          <img width={100} src="/image/hm-logo.png" alt="hm-logo.png" />
+          <img width={200} src="/image/mins-logo.png" alt="mins-logo.png" />
         </Link>
       </div>
       <div className="nav-menu-area">

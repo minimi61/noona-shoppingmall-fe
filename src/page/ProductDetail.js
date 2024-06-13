@@ -51,12 +51,24 @@ const ProductDetail = () => {
     <Container className="product-detail-card">
       <Row>
         <Col sm={6}>
-          <img src={image && image} className="w-100" alt="product" />
+          <img
+            src={image && image}
+            className="w-100"
+            alt="product"
+            style={{ width: "200px", height: "600px" }}
+          />
         </Col>
         <Col className="product-info-area" sm={6}>
-          <div className="product-info">{name}</div>
-          <div className="product-info">₩ {price}</div>
-          <div className="product-info">{description}</div>
+          <div
+            className="product-info"
+            style={{ fontSize: "28px", fontWeight: "bold" }}
+          >
+            {name}
+          </div>
+          <div className="product-info" style={{ fontWeight: "bold" }}>
+            ₩ {Number(price).toLocaleString()}
+          </div>
+          <div className="product-info">description : {description}</div>
 
           <Dropdown
             className="drop-down size-drop-down"

@@ -15,7 +15,7 @@ const Sidebar = () => {
     return (
       <div>
         <Link to="/">
-          <img width={100} src="/image/hm-logo.png" alt="hm-logo.png" />
+          <img width={200} src="/image/mins-logo.png" alt="mins-logo.png" />
         </Link>
         <div className="sidebar-item">Admin Account</div>
         <ul className="sidebar-area">
@@ -41,7 +41,7 @@ const Sidebar = () => {
 
       <Navbar bg="light" expand={false} className="mobile-sidebar-toggle">
         <Container fluid>
-          <img width={80} src="/image/hm-logo.png" alt="hm-logo.png" />
+          <img width={80} src="/image/mins-logo.png" alt="mins-logo.png" />
           <Navbar.Brand href="#"></Navbar.Brand>
           <Navbar.Toggle
             aria-controls={`offcanvasNavbar-expand`}
