@@ -11,9 +11,17 @@ const ProductCard = ({ item }) => {
 
   return (
     <div className="card" onClick={() => showProduct(item._id)}>
-      <img src={item.image || ""} alt="" />
-      <div>{item.name}</div>
-      <div>₩ {item.price}</div>
+      <img
+        src={item.image || ""}
+        alt=""
+        style={{ width: "100%", height: "300px" }}
+      />
+      <div style={{ margin: "10px 0px", fontSize: "20px", fontWeight: "bold" }}>
+        {item.name}
+      </div>
+      <div style={{ fontSize: "18px" }}>
+        ₩ {Number(item.price).toLocaleString()}
+      </div>
     </div>
   );
 };
