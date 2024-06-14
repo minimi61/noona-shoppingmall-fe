@@ -30,7 +30,7 @@ const Navbar = ({ user }) => {
         name,
       })
     );
-  }, [query]);
+  }, []);
 
   const onCheckEnter = (event) => {
     if (event.key === "Enter") {
