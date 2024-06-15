@@ -12,25 +12,24 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../action/userAction";
 import { productActions } from "../action/productAction";
+import { TAG } from "../constants/product.constants";
 
 const Navbar = ({ user }) => {
   const dispatch = useDispatch();
   const { cartItemCount } = useSelector((state) => state.cart);
   const isMobile = window.navigator.userAgent.indexOf("Mobile") !== -1;
   const [showSearchBox, setShowSearchBox] = useState(false);
-  const menuList = ["여성", "Divided", "남성", "신생아/유아", "아동", "Sale"];
+  const menuList = TAG;
   let [width, setWidth] = useState(0);
   let navigate = useNavigate();
   const [query, setQuery] = useSearchParams();
+  const page = query.get("page") || "";
   const name = query.get("name") || "";
+  const menu = query.get("menu") || "";
 
   useEffect(() => {
-    dispatch(
-      productActions.getProductList({
-        name,
-      })
-    );
-  }, []);
+    dispatch(productActions.getProductList({ page, name, menu }));
+  }, [menu]);
 
   const onCheckEnter = (event) => {
     if (event.key === "Enter") {
@@ -40,6 +39,11 @@ const Navbar = ({ user }) => {
       navigate(`?page=1&name=${event.target.value}`);
       setQuery({ page: 1, name: event.target.value });
     }
+  };
+
+  const onClickMenu = (menu) => {
+    navigate(`?page=1&menu=${menu}`);
+    setQuery({ page: 1, menu });
   };
   const logout = () => {
     dispatch(userActions.logout());
@@ -135,8 +139,8 @@ const Navbar = ({ user }) => {
       <div className="nav-menu-area">
         <ul className="menu">
           {menuList.map((menu, index) => (
-            <li key={index}>
-              <a href="#">{menu}</a>
+            <li key={index} style={{ padding: "0 15px", cursor: "pointer" }}>
+              <div onClick={() => onClickMenu(menu)}>{menu}</div>
             </li>
           ))}
         </ul>

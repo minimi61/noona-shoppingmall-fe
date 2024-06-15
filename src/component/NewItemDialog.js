@@ -3,10 +3,11 @@ import { Form, Modal, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import CloudinaryUploadWidget from "../utils/CloudinaryUploadWidget";
 import { productActions } from "../action/productAction";
-import { CATEGORY, STATUS, SIZE } from "../constants/product.constants";
+import { CATEGORY, STATUS, SIZE, TAG } from "../constants/product.constants";
 import "../style/adminProduct.style.css";
 import * as types from "../constants/product.constants";
 import { commonUiActions } from "../action/commonUiAction";
+import { useSearchParams } from "react-router-dom";
 
 const InitialFormData = {
   name: "",
@@ -17,6 +18,7 @@ const InitialFormData = {
   category: [],
   status: "active",
   price: 0,
+  tag: "WOMAN",
 };
 const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
   const { selectedProduct } = useSelector((state) => state.product);
@@ -27,6 +29,8 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
   const [stock, setStock] = useState([]);
   const dispatch = useDispatch();
   const [stockError, setStockError] = useState(false);
+  const [query, setQuery] = useSearchParams();
+  const page = query.get("page") || 1;
   const handleClose = () => {
     setFormData([]);
     setShowDialog(false);
@@ -48,7 +52,8 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
       dispatch(
         productActions.editProduct(
           { ...formData, stock: totalStock },
-          selectedProduct._id
+          selectedProduct._id,
+          page
         )
       );
       setShowDialog(false);
@@ -281,6 +286,16 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
               required
             >
               {STATUS.map((item, idx) => (
+                <option key={idx} value={item.toLowerCase()}>
+                  {item}
+                </option>
+              ))}
+            </Form.Select>
+          </Form.Group>
+          <Form.Group as={Col} controlId="tag">
+            <Form.Label>tag</Form.Label>
+            <Form.Select value={formData.tag} onChange={handleChange} required>
+              {TAG.map((item, idx) => (
                 <option key={idx} value={item.toLowerCase()}>
                   {item}
                 </option>

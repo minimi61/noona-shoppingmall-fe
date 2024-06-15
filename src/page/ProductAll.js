@@ -27,9 +27,9 @@ const ProductAll = () => {
   }, [dispatch, name, page]);
 
   const handlePageClick = ({ selected }) => {
-    const newQuery = new URLSearchParams(query.toString()); // query 객체를 URLSearchParams 객체로 변환
-    newQuery.set("page", selected + 1); // 페이지 번호 설정
-    setQuery(newQuery); // 새로운 쿼리 설정
+    const newQuery = new URLSearchParams(query.toString());
+    newQuery.set("page", selected + 1);
+    setQuery(newQuery);
   };
   return (
     <Container>
