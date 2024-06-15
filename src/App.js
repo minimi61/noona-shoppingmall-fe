@@ -6,12 +6,15 @@ import { userActions } from "./action/userAction";
 import "./style/common.style.css";
 import AppLayout from "./Layout/AppLayout";
 import AppRouter from "./routes/AppRouter";
+import Popup from "./component/Popup";
 
 function App() {
   return (
     <div>
       <AppLayout>
-        <AppRouter />
+        <Popup>
+          <AppRouter />
+        </Popup>
       </AppLayout>
     </div>
   );

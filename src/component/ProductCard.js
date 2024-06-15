@@ -5,12 +5,25 @@ import { currencyFormat } from "../utils/number";
 const ProductCard = ({ item }) => {
   const navigate = useNavigate();
   const showProduct = (id) => {
-    // 상품 디테일 페이지로 가기
     navigate(`/product/${id}`);
   };
+  const nonStockCheck = Object.values(item.stock).every((_item) => _item === 0);
 
   return (
     <div className="card" onClick={() => showProduct(item._id)}>
+      {nonStockCheck && (
+        <div
+          style={{
+            position: "absolute",
+            backgroundColor: "white",
+            color: "black",
+            fontWeight: "bold",
+            padding: "0 10px",
+          }}
+        >
+          SOLD OUT
+        </div>
+      )}
       <img
         src={item.image || ""}
         alt=""
